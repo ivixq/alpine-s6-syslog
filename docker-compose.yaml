@@ -1,20 +1,20 @@
 version: '2'
 services:
  syslog-app:
-  image: ivixq/alpine-s6-edge-rsyslog-loganalyer
-#  image: alpine-s6-edge-syslog
+  image: ivixq/alpine-s6-syslog
   container_name: syslog-app
   ports:
    - 514:514/udp
-   - 10514:10514/tcp
-   - 10051:10051/tcp
-   - 10052:10052/tcp
-   - 80:80/tcp
+#   - 10051:10051/tcp
+   - 8080:80/tcp
 #  volumes:
 #   - /data/syslog.cfg:/cfg
   environment:
    - DEBUG_MODE=true
-   - HTTP_FQDN=192.168.1.199
+#   - ENABLE_ZABBIX=TRUE
+#   - ENABLE_CRON=TRUE
+#   - CRON_EVENT=59 23 * * * logrotate -f /etc/logrotate.d/* >/dev/null 2>\&1
+   - HTTP_FQDN=192.168.1.188
    - DB_HOST=syslog-db
    - DB_USER=syslog
    - DB_NAME=Syslog
@@ -24,14 +24,17 @@ services:
    - app-net
 
  syslog-db: 
-#  image: alpine-s6-edge-mariadb
-  image: ivixq/alpine-s6-edge-mariadb
+  image: ivixq/alpine-s6-mariadb
   container_name: syslog-db
   volumes:
    - /data/mysql/syslog:/var/lib/mysql
    - /data/mysql.cfg:/etc/conf.d
   environment:
    - DEBUG_MODE=true
+#   - ENABLE_ZABBIX=TRUE
+#   - ENABLE_CRON=TRUE
+#   - CRON_EVENT=59 23 * * * logrotate -f /etc/logrotate.d/* >/dev/null 2>\&1
+   - SQL_MODE=NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
    - MYSQL_ROOT_PASSWORD=123456
    - MYSQL_USER=syslog
    - MYSQL_DATABASE=Syslog

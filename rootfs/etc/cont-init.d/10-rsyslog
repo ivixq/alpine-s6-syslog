@@ -10,8 +10,6 @@ DB_PORT=${DB_PORT:-"3306"}
 DB_NAME=${DB_NAME:-"Syslog"}
 DB_USER=${DB_USER:-"syslog"}
 DB_PASS=${DB_PASS:-"syspass"}
-SYSLOG_ADMIN=${SYSLOG_ADMIN:-"admin"}
-ADMIN_PASS=${ADMIN_PASS:-"admin"}
 
 INIT_FILE="`basename $0`-init"
 mysqlcmd="mysql -h$DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASS -A -N"
@@ -31,14 +29,6 @@ if [ ! -f /tmp/state/$INIT_FILE ]; then
         -e "s/<DB_NAME>/$DB_NAME/g" \
         -e "s/<DB_USER>/$DB_USER/g" \
         -e "s/<DB_PASS>/$DB_PASS/g" -i /etc/rsyslog.conf
-    
-    sed -e "s/<DB_HOST>/$DB_HOST/g" \
-        -e "s/<DB_NAME>/$DB_NAME/g" \
-        -e "s/<DB_USER>/$DB_USER/g" \
-        -e "s/<DB_USER>/$DB_PASS/g" \
-        -e "s/<SYSLOG_ADMIN/$SYSLOG_ADMIN/g" \
-        -e "s/<ADMIN_PASS>/$ADMIN_PASS/g" -i /var/www/html/loganalyzer/install.php
-
     
     mkdir -p /tmp/state
     touch /tmp/state/$INIT_FILE
