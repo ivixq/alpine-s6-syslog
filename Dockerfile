@@ -4,8 +4,9 @@ MAINTAINER ivixq
 ARG LOGANALYZER_VERSION=4.1.7
 
 ## Install syslog-ng php5 apache
-RUN apk --no-cache upgrade && \
-    apk --no-cache add \
+
+RUN apk update && apk upgrade --available && \
+    apk add --update \
         rsyslog rsyslog-mysql mariadb-client \
         php5-apache2 php5-gd php5-mysqli ttf-dejavu && \
     rm -rf /var/cache/apk/* && \
@@ -31,5 +32,3 @@ RUN touch /var/www/html/loganalyzer/config.php && \
 
 ## Export ports
 EXPOSE 514/udp
-
-
