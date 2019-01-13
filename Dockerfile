@@ -5,10 +5,11 @@ ARG LOGANALYZER_VERSION=4.1.7
 
 ## Install syslog-ng php5 apache
 
-RUN apk update && apk upgrade --available && \
+RUN apk --no-cache update  && apk upgrade --available && \
     apk add --update \
-        rsyslog rsyslog-mysql mariadb-client \
-        php5-apache2 php5-gd php5-mysqli ttf-dejavu && \
+        rsyslog rsyslog-mysql mariadb-client ttf-dejavu \
+#        php5-apache2 php5-gd php5-mysqli && \
+        php7-apache2 php7-gd php7-mysqli && \
     rm -rf /var/cache/apk/* && \
 ## Install Loganalyzer
     curl -sSL http://download.adiscon.com/loganalyzer/loganalyzer-${LOGANALYZER_VERSION}.tar.gz | tar xfz - -C / && \
