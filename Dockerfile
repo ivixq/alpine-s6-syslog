@@ -4,9 +4,9 @@ MAINTAINER ivixq
 ARG LOGANALYZER_VERSION=4.1.7
 
 ## Install syslog-ng php5 apache
-
 RUN echo 'https://mirrors.aliyun.com/alpine/v3.8/community' >> /etc/apk/repositories && \
-    apk --no-cache update  && apk upgrade --available && \
+    apk --no-cache update  && \
+    apk upgrade --available && \
     apk add --update \
         rsyslog rsyslog-mysql mariadb-client ttf-dejavu \
         php5-apache2 php5-gd php5-mysqli && \
