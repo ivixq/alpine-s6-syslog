@@ -4,6 +4,8 @@ if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ];  then
     set -x
 fi
 
+HTTP_FQDN=${HTTP_FQDN:-""}
+
 INIT_FILE="`basename $0`-init"
 
 if [ ! -f /tmp/state/$INIT_FILE ]; then  
