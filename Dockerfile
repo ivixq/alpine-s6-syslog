@@ -2,6 +2,7 @@ FROM ivixq/alpine-s6
 MAINTAINER ivixq
 
 ARG LOGANALYZER_VERSION=4.1.7
+EVN ZABBIX_HOSTNAME=syslog
 
 ## Install syslog-ng php5 apache
 RUN echo 'https://mirrors.aliyun.com/alpine/v3.8/community' >> /etc/apk/repositories && \
