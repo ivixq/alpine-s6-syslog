@@ -1,5 +1,5 @@
-FROM ivixq/alpine-s6
-MAINTAINER ivixq
+FROM ivixq/alpine-s6:3.9
+LABEL maintainer=ivixq
 
 ARG LOGANALYZER_VERSION=4.1.7
 ENV ZABBIX_HOSTNAME=syslog

@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 ## Debug Mode
 if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ];  then
-    set -x
+  set -x
 fi
 
 ## default parameters
@@ -11,26 +11,25 @@ DB_NAME=${DB_NAME:-"Syslog"}
 DB_USER=${DB_USER:-"syslog"}
 DB_PASS=${DB_PASS:-"syspass"}
 
-INIT_FILE="`basename $0`-init"
 mysqlcmd="mysql -h$DB_HOST -P$DB_PORT -u$DB_USER -p$DB_PASS -A -N"
 
-if [ ! -f /tmp/state/$INIT_FILE ]; then
-    while ! $mysqlcmd -e "USE $DB_NAME" >/dev/null 2>&1; do
-        sleep 1
-    done
+if [ ! -f /tmp/state/`basename $0`-init ]; then
+  while ! $mysqlcmd -e "USE $DB_NAME" >/dev/null 2>&1; do
+    sleep 1
+  done
   
-    $mysqlcmd -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
-    if ! $mysqlcmd $DB_NAME -e "select count(*) from users;"; then
-        echo "[i] import inital data"
-        $mysqlcmd -D "$DB_NAME" < "/etc/cfg/mysql-createDB.sql"
-    fi
+  $mysqlcmd -e "CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
+  if ! $mysqlcmd $DB_NAME -e "select count(*) from users;"; then
+    echo "[i] import inital data"
+    $mysqlcmd -D "$DB_NAME" < "/etc/cfg/mysql-createDB.sql"
+  fi
 
-    sed -e "s/<DB_HOST>/$DB_HOST/g" \
-        -e "s/<DB_NAME>/$DB_NAME/g" \
-        -e "s/<DB_USER>/$DB_USER/g" \
-        -e "s/<DB_PASS>/$DB_PASS/g" -i /etc/rsyslog.conf
+  sed -e "s/<DB_HOST>/$DB_HOST/g" \
+      -e "s/<DB_NAME>/$DB_NAME/g" \
+      -e "s/<DB_USER>/$DB_USER/g" \
+      -e "s/<DB_PASS>/$DB_PASS/g" -i /etc/rsyslog.conf
     
-    mkdir -p /tmp/state
-    touch /tmp/state/$INIT_FILE
+  mkdir -p /tmp/state
+  touch /tmp/state/`basename $0`-init
 fi
 
